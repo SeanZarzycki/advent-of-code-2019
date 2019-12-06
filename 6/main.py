@@ -1,5 +1,5 @@
 import itertools
-from iteration_utilities import deepflatten
+
 
 orbits = {}
 bidirect_orbits = {}
@@ -39,11 +39,11 @@ def traverse_part2(start, count):
     visited.append(start)
     if start in bidirect_orbits['SAN']:
         return count-1
-    return [traverse_part2(x, count + 1) for x in bidirect_orbits[start] if x not in visited]
+    if len([o for o in bidirect_orbits[start] if o not in visited]) == 0:
+        return 0
+    return sum([traverse_part2(x, count + 1) for x in bidirect_orbits[start] if x not in visited])
 
-#part1 = sum([traverse_part1(o, 0) for o in orbits])
-#print(part1)
-l = traverse_part2('YOU', 0)
-print(l)
-part2 = list(deepflatten(l))
+part1 = sum([traverse_part1(o, 0) for o in orbits])
+print(part1)
+part2 = traverse_part2('YOU', 0)
 print(part2)
